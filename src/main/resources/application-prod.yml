@@ -1,0 +1,21 @@
+# 로깅 설정
+logging:
+  level:
+    root: info
+    com.ebaykorea.saturn: info
+
+# Saturn 설정
+saturn:
+  groupId: com.gmarket
+  artifactId: example
+  # MoA 설정
+  moa:
+    host: http://moafw2.ebaykorea.com/bulk
+
+# spring boot 2.6 버전이상 호환하기 위한 설정
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+
