@@ -9,15 +9,17 @@ trigger:
 pool: gfc
   #vmImage: ubuntu-latest
 
-steps:
-- task: Gradle@2
-  inputs:
-    workingDirectory: ''
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'build'
+stages:
+- stage: Build
+  displayName: Build Devops base image
+  jobs:
+  - job: Build_and_Push
+    steps:
+    - task: JavaToolInstaller@0
+      inputs:
+        versionSpec: "18"
+        jdkArchitectureOption: x64
+        jdkSourceOption: LocalDirectory
+        jdkFile: "C:\\\\Users\\jinwookim\\Downloads\\zulu-18.zip"
+        jdkDestinationDirectory: "C:\\\\Users\\jinwookim\\Downloads\\zulu"
+        cleanDestinationDirectory: true
