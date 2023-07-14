@@ -6,8 +6,8 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
+pool: gfc
+  #vmImage: ubuntu-latest
 
 steps:
 - task: Gradle@2
