@@ -18,7 +18,7 @@ stages:
     displayName: Deploy job
     pool:
       vmImage: Default
-    environment: 'myenv.aksnamespace' #customize with your environment
+    environment: 'jm-env.bluegreen-test' #customize with your environment
     strategy:
       runOnce:
         deploy:
