@@ -6,7 +6,7 @@
 trigger:
 - main
 
-pool: gfc
+pool: Default
   #vmImage: ubuntu-latest
 
 stages:
