@@ -10,16 +10,41 @@ pool: Default
   #vmImage: ubuntu-latest
 
 stages:
-- stage: Build
-  displayName: Build Devops base image
+- stage: Deploy
+  displayName: Deploy stage
+  # dependsOn: Build
   jobs:
-  - job: Build_and_Push
-    steps:
-    - task: JavaToolInstaller@0
-      inputs:
-        versionSpec: "18"
-        jdkArchitectureOption: x64
-        jdkSourceOption: LocalDirectory
-        jdkFile: "C:\\\\Users\\jinwookim\\Downloads\\zulu-18.zip"
-        jdkDestinationDirectory: "C:\\\\Users\\jinwookim\\Downloads\\zulu"
-        cleanDestinationDirectory: true
+  - deployment: Deploy
+    displayName: Deploy job
+    pool:
+      vmImage: Default
+    environment: 'myenv.aksnamespace' #customize with your environment
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifactName: 'manifests'
+              downloadPath: '$(System.ArtifactsDirectory)/manifests'
+
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              namespace: $(k8sNamespace)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              namespace: $(k8sNamespace)
+              manifests: |
+                $(System.ArtifactsDirectory)/manifests/deployment.yml
+                $(System.ArtifactsDirectory)/manifests/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)
