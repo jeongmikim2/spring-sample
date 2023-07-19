@@ -23,8 +23,7 @@ stages:
   jobs:
   - deployment: Deploy
     displayName: Deploy job
-    pool:
-      vmImage: Default
+    pool: Default
     environment: 'jm-env.bluegreen-test' #customize with your environment
     strategy:
       runOnce:
