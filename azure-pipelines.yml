@@ -9,6 +9,13 @@ trigger:
 pool: Default
   #vmImage: ubuntu-latest
 
+variables:
+  imageName: 'zipkin-perf'
+  dockerRegistryServiceConnection: 'acr-for-bluegreen'
+  imageRepository: 'zipkin-perf'
+  containerRegistry: 'registryforadopoc.azurecr.io'
+  tag: 'test'
+
 stages:
 - stage: Deploy
   displayName: Deploy stage
