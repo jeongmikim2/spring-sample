@@ -14,33 +14,14 @@ jobs:
 
       - name: Set up Java version
         run: |
-          echo "java install~~"
+          echo "java install~~"          
       
-      - id: parse-codeowners
-        run: |
-          # CODEOWNERS 경로에 맞게 수정하세요 (예: .github/CODEOWNERS)
-          path="CODEOWNERS"
-          if [[ ! -f "$path" ]]; then
-            echo "CODEOWNERS file not found"
-            echo "::set-output name=approvers::"
-            exit 0
-          fi
-
-          # 주석(#)과 빈줄 제거, 모든 줄에서 @사용자명만 전부 추출
-          approvers=$(grep -v '^\s*#' "$path" | grep -v '^\s*$' | grep -o '@[a-zA-Z0-9_-]\+' | tr '\n' ',' | sed 's/,$//')
-      
-          # @ 제거
-          approvers=${approvers//@/}
-      
-          echo "approvers=${approvers}"
-          echo "::set-output name=approvers::$approvers"
-          
       - name: Manual Workflow Approval
         uses: trstringer/manual-approval@v1.11.0
         with:
           secret: ${{ secrets.JM_PAT }}
           # approvers: jeongmikim2, jinkyupark
-          approvers: ${{ steps.parse-codeowners.outputs.approvers }}
+          approvers: ${{ github.actor }}
           minimum-approvals: 1
           issue-title: "Deploying v1.3.5 to prod from staging"
           issue-body: "Please approve or deny the deployment of version v1.3.5."
