@@ -17,8 +17,7 @@ jobs:
           echo "java install~~"          
       
       - name: Manual Workflow Approval
-        uses: trstringer/manual-approval@test
-        # uses: trstringer/manual-approval@v1.11.0
+        uses: trstringer/manual-approval@v1.11.0
         with:
           secret: ${{ secrets.JM_PAT }}
           # approvers: jeongmikim2, jinkyupark
