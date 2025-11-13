@@ -26,12 +26,12 @@ jobs:
             exit 0
           fi
 
-          # 주석과 빈 줄 제거, 두번째 컬럼인 사용자명만 추출 (간단 예)
-          approvers=$(grep -v '^\s*#' "$path" | grep -v '^\s*$' | awk '{print $2}' | tr '\n' ',' | sed 's/,$//')
-
-          # @ 제거 (원하면 그대로 두어도 됨)
+          # 주석(#)과 빈줄 제거, 모든 줄에서 @사용자명만 전부 추출
+          approvers=$(grep -v '^\s*#' "$path" | grep -v '^\s*$' | grep -o '@[a-zA-Z0-9_-]\+' | tr '\n' ',' | sed 's/,$//')
+      
+          # @ 제거
           approvers=${approvers//@/}
-
+      
           echo "approvers=${approvers}"
           echo "::set-output name=approvers::$approvers"
           
